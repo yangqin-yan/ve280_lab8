@@ -4,8 +4,9 @@
 using namespace std;
 
 void Node::addChild(Node *child){
-    if(child_num == n){
+    if(child_num >= n){
         tooManyChildren e;
+        delete child;
         throw e;
     }
     child->parent = this;
@@ -112,6 +113,10 @@ int Node::getHeight(){
 // EFFECTS: return height of this
 
 Node &Node::operator[](int i){
+    if(i >= child_num){
+        invalidIndex e;
+        throw e;
+    }
     return **(children + i);
 }
 // EFFECTS: return a reference of (i+1) th child node of this,
