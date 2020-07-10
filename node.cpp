@@ -27,14 +27,9 @@ value(_value), child_num(0), n(_n), parent(nullptr), children(new Node*[n]), hei
 
 Node::~Node(){
     if(height == 0){
-        // delete[] **children;
         delete[] children;
         return;
     }
-   // for(int i = 0; i < child_num; i++){
-    //    this->children[i]->~Node();
-    //}
-    // delete
     for(int i = 0; i < child_num; i++){
         delete children[i];
     }
@@ -68,21 +63,37 @@ void Node::traverse(){
 //          1 3 5 6 2 4
 
 bool Node::contain(Node *sub){
+
     if(sub->value != value){
+        for(int i = 0; i < child_num; i++){
+            if(children[i]->contain(sub))
+                return true;
+        }
         return false;
     }
+    //sub->value == value
     if(!sub->height){
         // leaf case
-        return true;
+        if(sub->value == value)
+            return true;
+        else
+            return false;
     }
+    else{
+        // this has fewer children than sub.
+        if(child_num != sub->child_num)
+            return false;
 
-    bool out = true;
-    for(int i = 0; i < sub->child_num; i++){
-        out *= this->children[i]->contain(sub->children[i]);
-        if(!out)
-            break;
+        for(int i = 0; i < sub->child_num; i++){
+            if(!children[i]->contain(sub->children[i]))
+                return false;
+        }
+        if(sub->value == value){
+            return true;
+        }
+        return false;
+
     }
-    return out;
 }
 // EFFECTS: return whether the tree rooted at sub is a subtree of this
 
