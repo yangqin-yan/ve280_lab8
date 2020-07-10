@@ -23,6 +23,8 @@ private:
     // EFFECTS: add the node child to the children array
     //          throw an exception tooManyChildren when child_num exceed n
 
+    void inc_height();
+
 public:
     Node(int _value, int _n = 2);
     // EFFECTS: create a root node with value and n

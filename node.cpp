@@ -3,6 +3,14 @@
 
 using namespace std;
 
+void Node::inc_height(){
+    height++;
+    if(!parent || height < parent->height)
+        return;
+
+    parent->inc_height();
+}
+
 void Node::addChild(Node *child){
     if(child_num >= n){
         tooManyChildren e;
@@ -10,9 +18,10 @@ void Node::addChild(Node *child){
         throw e;
     }
     child->parent = this;
-    // children[child_num] = new Node(0, n);
     children[child_num] = child;
-    height = 1;
+    if(!child_num){
+        inc_height();
+    }
     child_num++;
 }
 // REQUIRES: n of the child node is the same with n of this
@@ -99,7 +108,7 @@ bool Node::contain(Node *sub){
 // EFFECTS: return whether the tree rooted at sub is a subtree of this
 
 int Node::getHeight(){
-    int max = 0;
+    /*int max = 0;
     for(int i = 0; i < child_num; i++){
         int out = 0;
         if(!child_num)
@@ -108,7 +117,8 @@ int Node::getHeight(){
         if(out > max)
             max = out;
     }
-    return max;
+    return max;*/
+    return height;
 }
 // EFFECTS: return height of this
 
